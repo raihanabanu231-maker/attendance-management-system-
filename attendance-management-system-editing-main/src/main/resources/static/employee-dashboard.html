@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Employee dashboard</h2>
+    <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="login.html">Logout</a>
+    </div>
+
+    <div class="card">
+        <div class="flex">
+            <label for="employeeId">Your Employee ID</label>
+            <input id="employeeId" placeholder="Auto-filled after login">
+            <button id="checkInBtn">Check In</button>
+            <button class="secondary" id="checkOutBtn">Check Out</button>
+        </div>
+        <p id="checkMsg"></p>
+    </div>
+
+    <h3>Your attendance history</h3>
+    <div id="records"></div>
+</div>
+<script src="js/attendance.js"></script>
+</body>
+</html>
