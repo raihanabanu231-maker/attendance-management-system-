@@ -1,0 +1,33 @@
+package com.janaeswar.AMS.Controller;
+
+import com.janaeswar.AMS.Model.Employee;
+import com.janaeswar.AMS.Service.EmployeeService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/admin/employees")
+public class EmployeeController {
+
+private final EmployeeService service;
+
+public EmployeeController(EmployeeService service) {
+this.service = service;
+}
+
+@GetMapping
+public List<Employee> all() {
+    return service.all();
+    }
+
+    @PutMapping("/{id}/approve")
+    public Employee approve(@PathVariable Long id) {
+    return service.approve(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+    service.delete(id);
+    }
+    }

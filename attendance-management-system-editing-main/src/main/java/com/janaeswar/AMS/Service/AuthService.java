@@ -8,9 +8,12 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
+
     private final EmployeeRepository employees;
 
-    public AuthService(EmployeeRepository employees) { this.employees = employees; }
+    public AuthService(EmployeeRepository employees) {
+        this.employees = employees;
+    }
 
     public Employee register(Employee e) {
         e.setRole("EMPLOYEE");

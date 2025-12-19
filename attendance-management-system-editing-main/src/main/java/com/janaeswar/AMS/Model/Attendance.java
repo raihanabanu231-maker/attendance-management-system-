@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-// Optional aggregated table (not strictly required). Kept for compatibility.
 @Entity
 @Table(name = "attendance")
 public class Attendance {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long employeeId;
     private LocalDate date;
     private LocalDateTime checkInTime;

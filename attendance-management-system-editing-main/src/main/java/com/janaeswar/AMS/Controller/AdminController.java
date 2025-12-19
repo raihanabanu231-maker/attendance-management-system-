@@ -5,27 +5,32 @@ import com.janaeswar.AMS.Service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin")
-@CrossOrigin
+@RequestMapping("/api/admin")   // ✅ Admin base path
 public class AdminController {
-    private final EmployeeService employeeService;
-    public AdminController(EmployeeService employeeService) { this.employeeService = employeeService; }
 
-    @GetMapping("/employees")
-    public List<Employee> listEmployees() { return employeeService.all(); }
+    private final EmployeeService service;
 
-    @PostMapping("/approve/{id}")
-    public Map<String, Object> approve(@PathVariable Long id, @RequestParam boolean approved) {
-        Employee e = employeeService.approve(id, approved);
-        return Map.of("success", true, "employeeId", e.getId(), "approved", e.isApproved());
+    public AdminController(EmployeeService service) {
+        this.service = service;
     }
 
+    // Admin view of all employees
+    @GetMapping("/employees")
+    public List<Employee> allEmployees() {
+        return service.all();
+    }
+
+    // Admin approves employee
+    @PutMapping("/employees/{id}/approve")
+    public Employee approveEmployee(@PathVariable Long id) {
+        return service.approve(id);
+    }
+
+    // Admin deletes employee
     @DeleteMapping("/employees/{id}")
-    public Map<String, Object> delete(@PathVariable Long id) {
-        employeeService.delete(id);
-        return Map.of("success", true, "message", "Employee deleted");
+    public void deleteEmployee(@PathVariable Long id) {
+        service.delete(id);
     }
 }

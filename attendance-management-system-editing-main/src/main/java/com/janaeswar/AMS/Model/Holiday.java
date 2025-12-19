@@ -10,7 +10,7 @@ public class Holiday {
     private Long id;
     private String name;
     private LocalDate date;
-    private String region; // optional scope
+    private String region; // optional
 
     public Long getId() { return id; }
     public String getName() { return name; }

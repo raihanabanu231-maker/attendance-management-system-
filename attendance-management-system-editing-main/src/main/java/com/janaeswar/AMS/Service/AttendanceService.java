@@ -10,16 +10,22 @@ import java.util.List;
 
 @Service
 public class AttendanceService {
+
     private final DayAttendanceRepository repo;
 
-    public AttendanceService(DayAttendanceRepository repo) { this.repo = repo; }
+    public AttendanceService(DayAttendanceRepository repo) {
+        this.repo = repo;
+    }
 
-    public DayAttendance checkIn(Long employeeId) {
+    // Employee check-in
+    public DayAttendance checkIn(Long employeeId, String department, String shift) {
         LocalDate today = LocalDate.now();
         DayAttendance a = repo.findByEmployeeIdAndDate(employeeId, today).orElseGet(() -> {
             DayAttendance na = new DayAttendance();
             na.setEmployeeId(employeeId);
             na.setDate(today);
+            na.setDepartment(department);
+            na.setShift(shift);
             return na;
         });
         if ("CHECKED_IN".equals(a.getStatus())) {
@@ -30,6 +36,7 @@ public class AttendanceService {
         return repo.save(a);
     }
 
+    // Employee check-out
     public DayAttendance checkOut(Long employeeId) {
         LocalDate today = LocalDate.now();
         DayAttendance a = repo.findByEmployeeIdAndDate(employeeId, today)
@@ -42,9 +49,18 @@ public class AttendanceService {
         return repo.save(a);
     }
 
+    // Attendance history for one employee
     public List<DayAttendance> history(Long employeeId) {
         return repo.findByEmployeeIdOrderByDateDesc(employeeId);
     }
 
-    public List<DayAttendance> all() { return repo.findAll(); }
+    // Attendance for a department within a date range
+    public List<DayAttendance> departmentRange(String department, LocalDate from, LocalDate to) {
+        return repo.findByDepartmentAndDateBetween(department, from, to);
+    }
+
+    // All attendance records
+    public List<DayAttendance> all() {
+        return repo.findAll();
+    }
 }

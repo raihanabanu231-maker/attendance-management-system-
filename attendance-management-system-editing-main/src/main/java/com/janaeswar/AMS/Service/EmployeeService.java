@@ -8,15 +8,29 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+
     private final EmployeeRepository repo;
 
-    public EmployeeService(EmployeeRepository repo) { this.repo = repo; }
+    public EmployeeService(EmployeeRepository repo) {
+        this.repo = repo;
+    }
 
-    public List<Employee> all() { return repo.findAll(); }
-    public Employee approve(Long id, boolean approved) {
-        Employee e = repo.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
-        e.setApproved(approved);
+    public List<Employee> all() {
+        return repo.findAll();
+    }
+
+    public Employee approve(Long id) {
+        Employee e = repo.findById(id).orElseThrow();
+        e.setApproved(true);
         return repo.save(e);
     }
-    public void delete(Long id) { repo.deleteById(id); }
+
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
+
+    // 🔥 Add this method
+    public List<Employee> byDepartment(String department) {
+        return repo.findByDepartment(department);
+    }
 }

@@ -1,37 +1,41 @@
-const api = '/api';
+document.getElementById("registerBtn")?.addEventListener("click", async () => {
+  const body = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("regEmail").value,
+    password: document.getElementById("regPassword").value,
+    department: document.getElementById("regDepartment").value,
+    shift: document.getElementById("regShift").value,
+    gender: document.getElementById("regGender").value,
+    bloodGroup: document.getElementById("regBlood").value
+  };
 
-function setSession(e) {
-  localStorage.setItem('employeeId', e.employeeId);
-  localStorage.setItem('role', e.role);
-  localStorage.setItem('name', e.name || '');
-}
-
-document.getElementById('loginBtn')?.addEventListener('click', async () => {
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const res = await fetch(api + '/auth/login', {
-    method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ email, password })
+  const res = await fetch("/api/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
   });
+
   const data = await res.json();
-  const msg = document.getElementById('msg');
-  if (data.success) {
-    setSession(data);
-    msg.textContent = `Welcome, ${data.name} (Role: ${data.role})`;
-    window.location.href = data.role === 'ADMIN' ? 'admin.html' : 'employee-dashboard.html';
-  } else {
-    msg.textContent = data.message;
-  }
+  alert("Registered! Wait for admin approval.");
 });
 
-document.getElementById('registerBtn')?.addEventListener('click', async () => {
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value.trim();
-  const res = await fetch(api + '/auth/register', {
-    method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ name, email, password })
-  });
-  const data = await res.json();
-  alert(data.id ? `Registered. Await admin approval. Your ID=${data.id}` : 'Registration failed');
+document.getElementById("loginBtn")?.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch(`/api/auth/login?email=${email}&password=${password}`);
+  const user = await res.json();
+
+  if (user && user.role === "ADMIN") {
+    localStorage.setItem("adminId", user.id);
+    window.location.href = "admin-dashboard.html";
+  } else if (user && user.role === "EMPLOYEE") {
+    localStorage.setItem("employeeId", user.id);
+    localStorage.setItem("name", user.name);
+    localStorage.setItem("department", user.department);
+    localStorage.setItem("shift", user.shift);
+    window.location.href = "employee-dashboard.html";
+  } else {
+    document.getElementById("msg").textContent = "Invalid credentials or not approved";
+  }
 });

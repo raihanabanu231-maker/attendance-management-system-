@@ -20,6 +20,9 @@ public class RequestController {
     @GetMapping("/employee/{employeeId}")
     public List<Request> byEmployee(@PathVariable Long employeeId) { return service.byEmployee(employeeId); }
 
+    @GetMapping("/pending")
+    public List<Request> pending() { return service.pending(); }
+
     @PostMapping("/{id}/status")
     public Map<String, Object> update(@PathVariable Long id, @RequestParam String status) {
         Request r = service.updateStatus(id, status);

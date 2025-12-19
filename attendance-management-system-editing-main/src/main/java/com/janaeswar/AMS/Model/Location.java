@@ -1,19 +1,31 @@
 package com.janaeswar.AMS.Model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+import java.util.List;
 
 @Entity
-@Table(name = "locations")
 public class Location {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String city;
-    private String address;
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+
+    @ElementCollection
+    private List<String> locationNames;
+
+    // Getters and setters
     public Long getId() { return id; }
-    public String getCity() { return city; }
-    public String getAddress() { return address; }
     public void setId(Long id) { this.id = id; }
-    public void setCity(String city) { this.city = city; }
-    public void setAddress(String address) { this.address = address; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public List<String> getLocationNames() { return locationNames; }
+    public void setLocationNames(List<String> locationNames) { this.locationNames = locationNames; }
 }
